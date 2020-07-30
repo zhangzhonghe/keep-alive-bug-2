@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.0-rc.5/vue.global.js"></script>
+    <script>
+        const { createApp, ref, h, KeepAlive } = Vue
+        const two = {
+            name: 'two',
+            data: () => ({ msg: 'two' }),
+            render() {
+                return h('div', this.msg)
+            },
+            created() {
+                console.log('created:two')
+            },
+            mounted() {
+                console.log('mounted:two')
+            },
+            activated() {
+                console.log('activated:two')
+            },
+            deactivated() {
+                console.log('deactivated:two')
+            },
+            unmounted() {
+                console.log('unmounted:two')
+            }
+        }
+        const one = {
+            name: 'one',
+            data: () => ({ msg: 'one' }),
+            render() {
+                return h(two)
+            },
+            created() {
+                console.log('created:one')
+            },
+            mounted() {
+                console.log('mounted:one')
+            },
+            // activated() {
+            //     console.log('activated:one')
+            // },
+            deactivated() {
+                console.log('deactivated:one')
+            },
+            unmounted() {
+                console.log('unmounted:one')
+            }
+        }
+
+        const toggle = ref(true)
+
+        const app = createApp({
+            render() {
+                return h(KeepAlive, () => (toggle.value ? h(one) : null))
+            }
+        })
+        app.mount('#app')
+    </script>
+</body>
+</html>
